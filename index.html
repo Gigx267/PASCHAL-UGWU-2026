@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Paschal Ugwu | Visual Artist</title>
+    <link rel="icon" type="image/x-icon" href="hy (1).jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --text-main: #ffffff;
+            --accent: #2ecc71; /* The green tint from the 'Get Tickets' button in the image */
+            --font-display: 'Anton', sans-serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+        }
+
+        /* Gritty Overlay Texture */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Vertical Sidebar Navigation */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 120px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 20px;
+            z-index: 100;
+            background: linear-gradient(to right, rgba(0,0,0,0.8), transparent);
+        }
+
+        .logo-box {
+            font-weight: 800;
+            border: 2px solid white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 60px;
+            font-size: 0.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transform: rotate(0deg);
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            writing-mode: vertical-lr; /* Optional: vertical text like some movie sites */
+            transform: rotate(180deg);
+        }
+
+        .nav-links a.active, .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        section {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-left: 150px;
+            scroll-snap-align: start;
+        }
+
+        .hero-bg {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 65%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            mask-image: linear-gradient(to left, black 60%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to left, black 60%, transparent 100%);
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+        }
+
+        .sub-heading {
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(5rem, 15vw, 10rem);
+            line-height: 0.85;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        .tagline {
+            font-family: var(--font-display);
+            color: #ccc;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            font-size: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            display: inline-block;
+            padding-top: 10px;
+        }
+
+        /* Action Button (Top Right) */
+        .btn-tickets {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            padding: 10px 25px;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            z-index: 100;
+        }
+
+        /* Layout for "Story" section */
+        .story-content {
+            max-width: 500px;
+        }
+        
+        .story-text {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            nav { width: 60px; padding: 20px 10px; }
+            section { padding-left: 70px; }
+            h1 { font-size: 4rem; }
+            .hero-bg { width: 100%; opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-box">PU</div>
+        <div class="nav-links">
+          
+            <a href="#about">Story</a>
+                        <a href="statement.html">Artist Statement </a> 
+                          <a href="CV.html" class="">CV</a>
+            <a href="Gallery.html">Gallery</a> 
+           
+        </div>
+    </nav>
+
+
+    <a href="Contact.html" class="btn-tickets" style="color: #ffffff; border-color: #ffffff;">Contact Artist</a>
+
+    <section id="home">
+        <div class="hero-bg" style="background-image: url('./hy\ \(1\).jpeg');"></div>
+        <div class="content">
+            <div class="sub-heading">Visual Artist</div>
+            <h1>PASCHAL<br>UGWU</h1>
+            <div class="tagline">The Soul Behind the Eyes</div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="hero-bg" style="background-image: url('./vf (2).jpeg'); opacity: 0.5;"></div>
+        <div class="content story-content">
+            <h1 style="font-size: 5rem;">STORY</h1>
+            <p class="story-text">
+               Paschal Ugwu, born in 1996 in Orba, Enugu State, Nigeria, is an artist
+based in Abuja. He holds a degree in Fine Arts from the University of
+Nigeria, Nsukka. Paschal specializes in expressive figurative painting,
+working mainly with acrylic on canvas. His distinctive style features
+unconventional figures, often with exaggerated eyes and a single ear,
+reflecting human emotions, personal impressions and everyday life. He
+has exhibited his work in shows such as Uplifted Spirits, participated in<BR>
+the Rele Bootcamp residency, and featured in the Plus 234 Art Fair. <BR>In
+2023, he was a finalist for the Kuenyehia Art Prize.
+He has also been featured in publications; "As Shoutout Miami" Los Angeles, 2022, "Artmatazz";
+Art magazine, Nigeria, 2020 and "Voyage Houston Magazine, New York, USA, in 2019.
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scroll highlighting
+        window.addEventListener('scroll', () => {
+            let fromTop = window.scrollY + 100;
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                let section = document.querySelector(link.hash);
+                if (
+                    section.offsetTop <= fromTop &&
+                    section.offsetTop + section.offsetHeight > fromTop
+                ) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

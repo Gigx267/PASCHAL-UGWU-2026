@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Gallery · Paschal Ugwu</title>
+    <link rel="icon" type="image/x-icon" href="gg (5).jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* RESET & VARIABLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0a;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --accent: #ffffff;
+            --font-display: 'Anton', sans-serif;
+            --font-sans: 'Inter', sans-serif;
+            --spacer: 16px;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* ————— MOBILE‑FIRST SIDEBAR (transforms to top bar on small screens) ————— */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 90;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo-box {
+            font-weight: 800;
+            border: 1.5px solid white;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: white;
+            letter-spacing: 0.5px;
+            transition: 0.2s;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a.active {
+            color: white;
+            border-bottom: 1px solid white;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        /* INQUIRE BUTTON (floating action for mobile) */
+        .contact-cta {
+            position: fixed;
+            bottom: 24px;
+            right: 20px;
+            padding: 14px 28px;
+            border: 1px solid white;
+            background: black;
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            z-index: 95;
+            border-radius: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+
+        .contact-cta:hover {
+            background: white;
+            color: black;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            padding: 90px 16px 90px 16px;  /* top padding for fixed nav, bottom for inquire button */
+            min-height: 100vh;
+        }
+
+        header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 16px;
+        }
+
+        header h1 {
+            font-family: var(--font-display);
+            font-size: 3.2rem;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            line-height: 1;
+            word-break: break-word;
+        }
+
+        /* —— GALLERY GRID: optimized for mobile —— */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        /* each tile */
+        .artwork {
+            position: relative;
+            background-color: #1a1a1a;
+            aspect-ratio: 1 / 1.2;  /* uniform base, but overridden by image fit */
+            overflow: hidden;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            transition: box-shadow 0.2s;
+        }
+
+        .artwork img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(30%);
+            transition: transform 0.5s ease, filter 0.3s;
+            pointer-events: none;  /* prevent drag, click goes to parent */
+        }
+
+        .artwork:active img {
+            transform: scale(1.03);
+            filter: grayscale(0%);
+        }
+
+        /* minimal overlay (title + year) appears on tap/click */
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 12px 12px 12px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+            opacity: 1;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .overlay h3 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: white;
+            line-height: 1.3;
+        }
+
+        .overlay p {
+            font-size: 0.7rem;
+            color: #ccc;
+            text-transform: uppercase;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        /* —— LIGHTBOX (full‑screen viewer) —— */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.98);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            padding: 40px 16px;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox-content {
+            max-width: 100%;
+            max-height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-caption {
+            margin-top: 24px;
+            text-align: center;
+            font-family: var(--font-sans);
+        }
+
+        .lightbox-caption h2 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .lightbox-caption p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            font-size: 2rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 300;
+            transition: 0.2s;
+            z-index: 1001;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .lightbox-close:hover {
+            border-color: white;
+            background: white;
+            color: black;
+        }
+
+        /* navigation arrows (optional) */
+        .lightbox-prev,
+        .lightbox-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.2s;
+            z-index: 1000;
+        }
+
+        .lightbox-prev { left: 10px; }
+        .lightbox-next { right: 10px; }
+
+        .lightbox-prev:hover,
+        .lightbox-next:hover {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+
+        /* larger tablet / desktop adjustments */
+        @media (min-width: 600px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 20px;
+            }
+            .overlay h3 { font-size: 1.2rem; }
+        }
+
+        @media (min-width: 1024px) {
+            /* revert to original sidebar layout for big screens */
+            nav {
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 120px;
+                height: 100vh;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                padding: 40px 20px;
+                background: linear-gradient(to right, rgba(0,0,0,0.95), transparent);
+                border-bottom: none;
+                backdrop-filter: none;
+            }
+
+            .logo-box {
+                margin-bottom: 60px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 25px;
+            }
+
+            .nav-links a {
+                writing-mode: vertical-lr;
+                transform: rotate(180deg);
+                font-size: 0.7rem;
+                border-bottom: none;
+                color: rgba(255,255,255,0.4);
+            }
+
+            .nav-links a.active {
+                color: white;
+                border-left: 1px solid white;
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+
+            .contact-cta {
+                top: 40px;
+                right: 40px;
+                bottom: auto;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 10px 25px;
+                background: black;
+                border: 1px solid white;
+                font-size: 0.8rem;
+            }
+
+            main {
+                padding: 60px 40px 60px 160px;
+            }
+
+            header h1 {
+                font-size: 4rem;
+            }
+
+            .lightbox-prev { left: 140px; } /* avoid overlapping sidebar */
+        }
+
+        /* fallback for very small screens */
+        @media (max-width: 380px) {
+            .nav-links { gap: 12px; }
+            .nav-links a { font-size: 0.65rem; }
+            header h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR / TOP NAV (mobile first) -->
+    <nav>
+        <a href="index.html" class="logo-box">PU</a>
+        <div class="nav-links">
+            <a href="index.html#about">Story</a>
+            <a href="statement.html">Artist Statement</a>
+            <a href="CV.html">CV</a>
+            <a href="Gallery.html" class="active">Gallery</a>
+        </div>
+    </nav>
+
+    <!-- FLOATING INQUIRE BUTTON -->
+    <a href="Contact.html" class="contact-cta">Inquire</a>
+
+    <main>
+        <header>
+            <h1>Selected Works</h1>
+        </header>
+
+        <!-- GALLERY GRID (images as clickable tiles) -->
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Each artwork tile now includes data attributes for lightbox -->
+            <div class="artwork" data-full="hy (1).jpeg" data-title="Resilience" data-year="2024" data-medium="Acrylic on Canvas">
+                <img src="gg (4).jpeg" alt="Resilience" loading="lazy">
+                <div class="overlay">
+                    <h3> "Desire to Fly Again" </h3>
+                    <p>
+Medium: Acrylic on Canvas<BR>
+Size: 36" × 24"<BR> 
+Year: 2024
+ </p>
+                </div>
+            </div>
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Emotional Form" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (2).jpeg" alt="Emotional Form" loading="lazy">
+                <div class="overlay">
+                    <h3>"Of The Same Feather" </h3>
+                    <p>
+Medium: Acrylic on Canvas<BR>
+Size: 36" × 36"<BR> 
+Year: 2025 </p>
+                </div>
+            </div>
+            <div class="artwork" data-full="passport.jpg" data-title="The Artist" data-year="2023" data-medium="Studio Portrait">
+                <img src="gg (3).jpeg" alt="The Artist" loading="lazy">
+                <div class="overlay">
+                    <h3>PDA </h3>
+                    <p>
+Medium: Acrylic on Canvas<BR>
+Size: 48" × 48"<BR> 
+Year: 2025 </p>
+                </div>
+            </div>
+            <div class="artwork" data-full="hy (1).jpeg" data-title="Resilience II" data-year="2024" data-medium="Acrylic on Canvas">
+                <img src="gg (5).jpeg" alt="Resilience II" loading="lazy">
+                <div class="overlay">
+                    <h3> "We've Got You"</h3>
+                    <p>
+Medium: Acrylic on Canvas<BR>
+Size: 48" × 60" <BR>
+Year: 2025
+ </p>
+                </div>
+            </div>
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (6).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>What's Left Behind </h3>
+                    <p>
+Medium: Acrylic on Canvas<BR>
+Size: 40" × 30"<BR>
+Year: 2025 </p>
+                </div>
+            </div>
+<div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (7).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3> Corporate Beggar </h3>
+                    <p>
+Medium: Acrylic on Canvas<BR>
+Size: 36" × 24"<BR>
+Year: 2024 </p>
+                </div>
+            </div>
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="jtt (1).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>Not For Sale </h3>
+                    <p>
+Medium: Acrylic on Canvas<BR>
+Size: 36" × 60"<BR>
+Year: 2025
+ </p>
+                </div>
+            </div>
+<div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (9).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>   Not a Mugshot   </h3>
+                    <p>
+Medium: Acrylic on Canvas<BR>
+Size: 60" × 48"<BR>
+Year: 2025 </p>
+                </div>
+            </div>
+<div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (10).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>Heavy is the Head </h3>
+                    <p>
+Medium: Acrylic on Canvas<BR>
+Size: 48" × 36"<BR>
+Year: 2024 </p>
+                </div>
+            </div>
+<div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="jtt (2).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>By Your Words </h3>
+                    <p>
+Medium: Acrylic on Canvas<BR>
+Size: 40" × 30"<BR>
+Year: 2025 </p>
+                </div>
+            </div>
+<div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (11).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>First Time Beaching </h3>
+                    <p> 
+                        
+Medium: Acrylic on Canvas <BR>
+Size: 48" × 36" <BR>
+Year: 2025
+
+                    </p>
+                </div>
+            </div>
+           
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (13).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>Curious Companion </h3>
+                    <p> 
+Medium: Acrylic on Canvas <br>
+
+Size: 60" × 48" <br>
+Year: 2024</p>
+                </div>
+            </div>
+             <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (12).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>Mixed Feelings I </h3>
+                    <p>
+                        Size: 15" × 12" <br>
+                       Medium: Acrylic and Charcoal on Canvas <br>
+                        Year of Production: 2024
+                </div>
+            </div>
+<div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (14).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>Mixed Feelings V </h3>
+                    <p>
+
+Size: 15" × 12"<BR>
+Medium: Acrylic and Charcoal on Canvas<BR>
+Year of Production: 2024 </p>
+                </div>
+            </div>
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (15).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>Mixed Feelings III </h3>
+                    <p>
+
+Size: 15" × 12"<BR>
+Medium: Acrylic and Charcoal on Canvas<BR>
+Year of Production: 2024 </p> 
+                </div>
+            </div>
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (16).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>Mixed Feelings I </h3>
+                    <p>
+
+Size: 15" × 12"<BR>
+Medium: Acrylic and Charcoal on Canvas<BR>
+Year of Production: 2024 </p> 
+                </div>
+            </div>
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (17).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                     <h3>Mixed Feelings II </h3>
+                    <p>
+
+Size: 15" × 12"<BR>
+Medium: Acrylic and Charcoal on Canvas<BR>
+Year of Production: 2024 </p> 
+                </div>
+            </div>
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (18).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3>Mixed Feelings IV </h3>
+                    <p>
+
+Size: 15" × 12"<BR>
+Medium: Acrylic and Charcoal on Canvas<BR>
+Year of Production: 2024 </p> 
+                </div>
+            </div>
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (19).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                    <h3> Those Who Stays With Their Eyes III</h3>
+                    <p> 
+Medium: Acrylic on Canvas<br>
+Size: 15" × 12"<br>
+Year: 2025 </p>
+                </div>
+            </div>
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (20).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                        <h3> Those Who Stays With Their Eyes IV</h3>
+                    <p> 
+Medium: Acrylic on Canvas<br>
+Size: 15" × 12"<br>
+Year: 2025 </p>
+                </div>
+            </div><div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (21).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                          <h3> Those Who Stays With Their Eyes V</h3>
+                    <p> 
+Medium: Acrylic on Canvas<br>
+Size: 15" × 12"<br>
+Year: 2025 </p>
+                </div>
+            </div>
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (22).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                      <h3> Those Who Stays With Their Eyes I</h3>
+                    <p> 
+Medium: Acrylic on Canvas<br>
+Size: 15" × 12"<br>
+Year: 2025 </p>
+                </div>
+            </div>
+            <div class="artwork" data-full="vf (2).jpeg" data-title="Perception" data-year="2023" data-medium="Acrylic on Canvas">
+                <img src="gg (23).jpeg" alt="Perception" loading="lazy">
+                <div class="overlay">
+                          <h3> Those Who Stays With Their Eyes II</h3>
+                    <p> 
+Medium: Acrylic on Canvas<br>
+Size: 15" × 12"<br>
+Year: 2025 </p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </main>
+
+    <!-- LIGHTBOX (hidden by default) -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <span class="lightbox-prev" id="lightboxPrev">‹</span>
+        <span class="lightbox-next" id="lightboxNext">›</span>
+        <div class="lightbox-content">
+            <img src="" alt="" id="lightboxImg">
+            <div class="lightbox-caption">
+                <h2 id="lightboxTitle"></h2>
+                <p id="lightboxMeta"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Get all artwork tiles
+            const artworks = Array.from(document.querySelectorAll('.artwork'));
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxTitle = document.getElementById('lightboxTitle');
+            const lightboxMeta = document.getElementById('lightboxMeta');
+            const closeBtn = document.getElementById('lightboxClose');
+            const prevBtn = document.getElementById('lightboxPrev');
+            const nextBtn = document.getElementById('lightboxNext');
+
+            let currentIndex = 0;
+
+            function openLightbox(index) {
+                if (index < 0 || index >= artworks.length) return;
+                const artwork = artworks[index];
+                const fullSrc = artwork.dataset.full;
+                const title = artwork.dataset.title || 'Untitled';
+                const year = artwork.dataset.year || '';
+                const medium = artwork.dataset.medium || '';
+
+                lightboxImg.src = fullSrc;
+                lightboxImg.alt = title;
+                lightboxTitle.textContent = title;
+                lightboxMeta.textContent = `${medium}${year ? ' · ' + year : ''}`;
+                currentIndex = index;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden'; // prevent background scroll
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            function showPrev() {
+                currentIndex = (currentIndex - 1 + artworks.length) % artworks.length;
+                updateLightboxFromCurrent();
+            }
+
+            function showNext() {
+                currentIndex = (currentIndex + 1) % artworks.length;
+                updateLightboxFromCurrent();
+            }
+
+            function updateLightboxFromCurrent() {
+                const artwork = artworks[currentIndex];
+                lightboxImg.src = artwork.dataset.full;
+                lightboxTitle.textContent = artwork.dataset.title || 'Untitled';
+                const year = artwork.dataset.year || '';
+                const medium = artwork.dataset.medium || '';
+                lightboxMeta.textContent = `${medium}${year ? ' · ' + year : ''}`;
+            }
+
+            // Event listeners: click on artwork tile
+            artworks.forEach((art, idx) => {
+                art.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openLightbox(idx);
+                });
+            });
+
+            // close lightbox
+            closeBtn.addEventListener('click', closeLightbox);
+
+            // click outside image to close (optional)
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) closeLightbox();
+            });
+
+            // keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('active')) return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') showPrev();
+                if (e.key === 'ArrowRight') showNext();
+            });
+
+            // previous / next buttons
+            prevBtn.addEventListener('click', showPrev);
+            nextBtn.addEventListener('click', showNext);
+
+            // swipe support for mobile (basic)
+            let touchStartX = 0;
+            lightbox.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            lightbox.addEventListener('touchend', (e) => {
+                if (!lightbox.classList.contains('active')) return;
+                const diff = e.changedTouches[0].screenX - touchStartX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) showPrev();
+                    else showNext();
+                }
+            });
+
+            // Fix for background scroll on mobile when lightbox is open
+            window.addEventListener('resize', () => {
+                // no extra action needed
+            });
+        })();
+    </script>
+</body>
+</html>

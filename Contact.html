@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>contact — paschal ugwu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            color: #e8e8e8;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        nav {
+            width: 100%;
+            background-color: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .logo-box {
+            font-size: 1.6rem;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: #f0f0f0;
+            text-transform: uppercase;
+            border-right: 1px solid #444;
+            padding-right: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: #d0d0d0;
+            text-decoration: none;
+            font-size: 1.05rem;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            border-bottom: 1px solid #aaaaaa;
+        }
+
+        .contact-card {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(18, 18, 18, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 5rem 4rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 100px;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle accent line at the top */
+        .contact-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 1px;
+            background: #ffffff;
+        }
+
+        h1 {
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 4rem;
+            color: #888;
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 3rem;
+        }
+
+        .contact-item {
+            text-decoration: none;
+            color: #dddddd;
+            display: block;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .contact-item strong {
+            display: block;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.7rem;
+            margin-bottom: 1rem;
+            font-family: sans-serif; /* Clean contrast for labels */
+        }
+
+        .contact-item p {
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            font-style: italic;
+        }
+
+        .contact-item:hover {
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .contact-item:hover p {
+            text-shadow: 0 0 15px rgba(255,255,255,0.3);
+        }
+
+        .caption-note {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #444;
+            text-align: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                padding: 2rem 1rem;
+            }
+            .contact-card {
+                padding: 3rem 2rem;
+            }
+            .contact-item p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo-box"></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="statement.html">Artist Statement</a>
+            <a href="CV.html">CV</a>
+            <a href="Gallery.html">Gallery</a>
+            <a href="Contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div class="contact-card">
+        <h1>Inquiries & Studio</h1>
+        
+        <div class="contact-grid">
+            <a href="mailto:paschalugwu93@gmail.com" class="contact-item">
+                <strong>Electronic Mail</strong>
+                <p>paschalugwu93@gmail.com</p>
+            </a>
+
+            <a href="tel:+2348139097793" class="contact-item">
+                <strong>Direct Line</strong>
+                <p>+234 813 909 7793</p>
+            </a>
+
+            <a href="https://paschalugwu.com" target="_blank" class="contact-item">
+                <strong>Digital Archive</strong>
+                <p>paschalugwu.com</p>
+            </a>
+
+            <a href="https://instagram.com/paschalugwu_art" target="_blank" class="contact-item">
+                <strong>Social Studio</strong>
+                <p>@paschalugwu_art</p>
+            </a>
+        </div>
+    </div>
+
+    <div class="caption-note">
+        Available for  commissions & collaboration
+    </div>
+</body>
+</html>
